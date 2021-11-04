@@ -1,5 +1,3 @@
- 
-
 public class ATM {
    private boolean userAuthenticated; // whether user is authenticated
    private int currentAccountNumber; // current user's account number
@@ -12,7 +10,7 @@ public class ATM {
    // constants corresponding to main menu options
    private static final int BALANCE_INQUIRY = 1;
    private static final int WITHDRAWAL = 2;
-   private static final int DEPOSIT  = 3; 
+   private static final int DEPOSIT = 3;
    private static final int EXIT = 4;
 
    // no-argument ATM constructor initializes instance variables
@@ -82,9 +80,13 @@ public class ATM {
             case BALANCE_INQUIRY: 
             case WITHDRAWAL: 
             case DEPOSIT:
-                           
-                
-            break;    
+
+               // initialize as new object of chosen type
+               currentTransaction = 
+                  createTransaction(mainMenuSelection);
+
+               currentTransaction.execute(); // execute transaction
+               break; 
             case EXIT: // user chose to terminate session
                screen.displayMessageLine("\nExiting the system...");
                userExited = true; // this ATM session should end
@@ -102,7 +104,7 @@ public class ATM {
       screen.displayMessageLine("\nMain menu:");
       screen.displayMessageLine("1 - View my balance");
       screen.displayMessageLine("2 - Withdraw cash");
-      screen.displayMessageLine("3 - Deposit funds"); 
+      screen.displayMessageLine("3 - Deposit funds");
       screen.displayMessageLine("4 - Exit\n");
       screen.displayMessage("Enter a choice: ");
       return keypad.getInput(); // return user's selection
@@ -119,16 +121,15 @@ public class ATM {
                currentAccountNumber, screen, bankDatabase);
             break;
          case WITHDRAWAL: // create new Withdrawal transaction
-          
+            temp = new Withdrawal(currentAccountNumber, screen, 
+               bankDatabase, keypad, cashDispenser);
             break; 
-         case DEPOSIT: // create new Deposit transaction 
-		 
+         case DEPOSIT: // create new Deposit transaction
+            temp = new Deposit(currentAccountNumber, screen, 
+               bankDatabase, keypad, depositSlot);
             break;
-          
       }
 
       return temp; // return the newly created object
    } 
 }
-
- 
